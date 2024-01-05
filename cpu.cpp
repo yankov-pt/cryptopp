@@ -22,7 +22,7 @@
 
 // For IsProcessorFeaturePresent on Microsoft Arm64 platforms,
 // https://docs.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-isprocessorfeaturepresent
-#if defined(_WIN32) && defined(_M_ARM64)
+#if defined(_WIN32) && (defined(_M_ARM64) || defined(_M_ARM64EC))
 # include <Windows.h>
 # include <processthreadsapi.h>
 #endif
@@ -882,8 +882,8 @@ inline bool CPU_QueryARMv7()
 # define LOCALRET true
 #elif defined(__APPLE__) && defined(__arm__)
 	// Apple hardware is ARMv7 or above.
-# define LOCALRET true
-#elif defined(_WIN32) && defined(_M_ARM64)
+	return true;
+#elif defined(_WIN32) && (defined(_M_ARM64) || defined(_M_ARM64EC))
 	// Windows 10 ARM64 is only supported on Armv8a and above
 # define LOCALRET true
 #endif
@@ -917,7 +917,7 @@ inline bool CPU_QueryNEON()
 	// Core feature set for Aarch32 and Aarch64.
 	if (IsAppleMachineARMv8())
 		return true;
-#elif defined(_WIN32) && defined(_M_ARM64)
+#elif defined(_WIN32) && (defined(_M_ARM64) || defined(_M_ARM64EC))
 	// Windows 10 ARM64 is only supported on Armv8a and above
 	if (IsProcessorFeaturePresent(PF_ARM_V8_INSTRUCTIONS_AVAILABLE) != 0)
 		return true;
@@ -945,7 +945,7 @@ inline bool CPU_QueryCRC32()
 	// M1 processor
 	if (IsAppleMachineARMv82())
 		return true;
-#elif defined(_WIN32) && defined(_M_ARM64)
+#elif defined(_WIN32) && (defined(_M_ARM64) || defined(_M_ARM64EC))
 	if (IsProcessorFeaturePresent(PF_ARM_V8_CRC32_INSTRUCTIONS_AVAILABLE) != 0)
 		return true;
 #endif
@@ -972,7 +972,7 @@ inline bool CPU_QueryPMULL()
 	// M1 processor
 	if (IsAppleMachineARMv82())
 		return true;
-#elif defined(_WIN32) && defined(_M_ARM64)
+#elif defined(_WIN32) && (defined(_M_ARM64) || defined(_M_ARM64EC))
 	if (IsProcessorFeaturePresent(PF_ARM_V8_CRYPTO_INSTRUCTIONS_AVAILABLE) != 0)
 		return true;
 #endif
@@ -999,7 +999,7 @@ inline bool CPU_QueryAES()
 	// M1 processor
 	if (IsAppleMachineARMv82())
 		return true;
-#elif defined(_WIN32) && defined(_M_ARM64)
+#elif defined(_WIN32) && (defined(_M_ARM64) || defined(_M_ARM64EC))
 	if (IsProcessorFeaturePresent(PF_ARM_V8_CRYPTO_INSTRUCTIONS_AVAILABLE) != 0)
 		return true;
 #endif
@@ -1026,7 +1026,7 @@ inline bool CPU_QuerySHA1()
 	// M1 processor
 	if (IsAppleMachineARMv82())
 		return true;
-#elif defined(_WIN32) && defined(_M_ARM64)
+#elif defined(_WIN32) && (defined(_M_ARM64) || defined(_M_ARM64EC))
 	if (IsProcessorFeaturePresent(PF_ARM_V8_CRYPTO_INSTRUCTIONS_AVAILABLE) != 0)
 		return true;
 #endif
@@ -1053,7 +1053,7 @@ inline bool CPU_QuerySHA256()
 	// M1 processor
 	if (IsAppleMachineARMv82())
 		return true;
-#elif defined(_WIN32) && defined(_M_ARM64)
+#elif defined(_WIN32) && (defined(_M_ARM64) || defined(_M_ARM64EC))
 	if (IsProcessorFeaturePresent(PF_ARM_V8_CRYPTO_INSTRUCTIONS_AVAILABLE) != 0)
 		return true;
 #endif
