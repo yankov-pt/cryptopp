@@ -35,8 +35,6 @@
 #define CRYPTOPP_PUBKEY_H
 
 #include "config.h"
-#include "elgamal.h"
-#include <type_traits>
 
 #if CRYPTOPP_MSC_VERSION
 # pragma warning(push)
@@ -53,8 +51,6 @@
 #include "argnames.h"
 #include "smartptr.h"
 #include "stdcpp.h"
-#include <iostream>
-// #include <spdlog/spdlog.h>
 
 #if defined(__SUNPRO_CC)
 # define MAYBE_RETURN(x) return x
@@ -1859,34 +1855,7 @@ public:
 			SecByteBlock derivedKey(encAlg.GetSymmetricKeyLength(encAlg.GetMaxSymmetricPlaintextLength(ciphertextLength)));
 			derivAlg.Derive(params, derivedKey, derivedKey.size(), z, q, parameters);
 
-			auto res = encAlg.SymmetricDecrypt(derivedKey, ciphertext, ciphertextLength, plaintext, parameters);
-			// Note: Mitigation for rowHammer needs to happen here, where we have key access!!
-			// Decode q agiana and check?
-			Element q2 = params.DecodeElement(ciphertext, true);
-			Element q3 = params.ExponentiateBase(x);
-			
-			// public element q == 
-			// auto g = params.GetSubgroupGenerator();
-			// // params.GetMaxExponent()
-			// auto x = key.GetPrivateExponent();
-			// auto g_to_x = params.ExponentiateElement(g, x);
-
-			// spdlog::info("Checking q vs q2 in ElGamal");
-			// Onyl for ELGAMAL!
-				// encAlg
-			if(std::enable_if<T, DL_PrivateKey_ElGamal<class BASE>>) {
-				if (q2 != q) {
-					std::cout << "Check FAILED decoded different pubkey from ciphertext? " << std::endl;
-				} else {
-					std::cout << "Check passed decoded same key " << std::endl;
-				}
-			}
-
-			// Second check, actually recompute  
-			// std::is_same<T == ELGAMAL
-			// Check if key == g_to_x?
-			return res;
-
+			return encAlg.SymmetricDecrypt(derivedKey, ciphertext, ciphertextLength, plaintext, parameters);
 		}
 		catch (DL_BadElement &)
 		{
@@ -1915,7 +1884,6 @@ public:
 		const DL_PublicKey<T> &key = this->GetKeyInterface();
 
 		Integer x(rng, Integer::One(), params.GetMaxExponent());
-		std::cout << "Creating exp x " << x << " with max exp:" << params.GetMaxExponent()<< std::endl;
 		Element q = params.ExponentiateBase(x);
 		params.EncodeElement(true, q, ciphertext);
 		unsigned int elementSize = params.GetEncodedElementSize(true);
