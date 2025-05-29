@@ -1,3 +1,8 @@
+### Crypto++ Forking
+
+Since the original repository seems somewhat dead, we have forked Crypto++ and applied all pending PRs. We're currently
+going through the issue list to address them.
+
 # Crypto++ Code Examples
 
 A collection of modular C++ examples demonstrating common Crypto++ usage patterns.  
